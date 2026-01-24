@@ -7,10 +7,10 @@ import react from "@astrojs/react";
 
 // https://astro.build/config
 export default defineConfig({
+  site: import.meta.env.APP_URL,
   vite: {
     plugins: [tailwindcss()],
   },
-
   integrations: [
     react({
       babel: {
