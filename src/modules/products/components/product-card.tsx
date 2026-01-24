@@ -2,13 +2,14 @@ import React from "react";
 import { useStore } from "@nanostores/react";
 import { ShoppingCart, Heart } from "lucide-react";
 import type { Product } from "@/modules/products/schemas/products.schema";
-import { addToCart } from "@/modules/cart/stores/cart.store";
+import { addToCart, cartProducts } from "@/modules/cart/stores/cart.store";
 import {
   addToWishlist,
   removeFromWishlist,
   wishlistProducts,
 } from "@/modules/wishlist/stores/wishlist.store";
 import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import { prefixImageUrl } from "@/shared/libraries/utils";
 
 // Helper for formatting price
@@ -45,6 +46,10 @@ export function ProductCard({ product }: ProductCardProps) {
   const $wishlistProducts = useStore(wishlistProducts);
   const inWishlist = $wishlistProducts.includes(product.id);
 
+  const $cartProducts = useStore(cartProducts);
+  const cartItem = $cartProducts.find((item) => item.id === product.id);
+  const quantityInCart = cartItem ? cartItem.quantity : 0;
+
   const stockStatus = getStockStatus(product.inventories);
   const imageUrl = prefixImageUrl(
     product.images?.[0]?.path || "",
@@ -65,20 +70,6 @@ export function ProductCard({ product }: ProductCardProps) {
       removeFromWishlist(product.id);
     } else {
       addToWishlist(product.id);
-    }
-  };
-
-  const getStockBadgeClass = () => {
-    const baseClass = "px-2 py-1 text-xs font-semibold rounded-full";
-    switch (stockStatus) {
-      case "in-stock":
-        return `${baseClass} bg-green-100 text-green-800`;
-      case "low-stock":
-        return `${baseClass} bg-yellow-100 text-yellow-800`;
-      case "out-of-stock":
-        return `${baseClass} bg-red-100 text-red-800`;
-      default:
-        return baseClass;
     }
   };
 
@@ -120,9 +111,20 @@ export function ProductCard({ product }: ProductCardProps) {
       <div className="pointer-events-none flex flex-1 flex-col p-4">
         <div className="mb-2 flex items-center justify-between">
           <span className="text-muted-foreground text-xs">{product.sku}</span>
-          <span className={getStockBadgeClass()}>
-            {stockStatusLabels[stockStatus]}
-          </span>
+          <Badge
+            variant={stockStatus === "out-of-stock" ? "destructive" : "outline"}
+            className={
+              stockStatus === "in-stock"
+                ? "border-transparent bg-green-100 text-green-800 hover:bg-green-100"
+                : stockStatus === "low-stock"
+                  ? "border-transparent bg-yellow-100 text-yellow-800 hover:bg-yellow-100"
+                  : ""
+            }
+          >
+            {stockStatus === "out-of-stock"
+              ? stockStatusLabels[stockStatus]
+              : `Stok: ${product.inventories?.reduce((sum, inv) => sum + inv.balance, 0) || 0}`}
+          </Badge>
         </div>
 
         <h3 className="text-foreground group-hover:text-primary mb-1 line-clamp-2 font-medium transition-colors">
@@ -130,9 +132,22 @@ export function ProductCard({ product }: ProductCardProps) {
         </h3>
 
         <div className="pointer-events-auto mt-auto flex items-center justify-between">
-          <span className="text-lg font-bold">
-            {formatPrice(product.price)}
-          </span>
+          <div className="flex flex-col">
+            {product.price_discount && Number(product.price_discount) > 0 ? (
+              <>
+                <span className="text-primary text-xl font-bold">
+                  {formatPrice(product.price_discount)}
+                </span>
+                <span className="text-muted-foreground text-xs line-through">
+                  {formatPrice(product.price)}
+                </span>
+              </>
+            ) : (
+              <span className="text-lg font-bold">
+                {formatPrice(product.price)}
+              </span>
+            )}
+          </div>
           <Button
             size="sm"
             variant="default"
@@ -142,6 +157,14 @@ export function ProductCard({ product }: ProductCardProps) {
             aria-label={`Tambah ${product.name} ke keranjang`}
           >
             <ShoppingCart className="h-4 w-4" />
+            {quantityInCart > 0 && (
+              <Badge
+                variant="destructive"
+                className="absolute -top-2 -right-2 flex h-5 w-5 items-center justify-center rounded-full p-0 text-[10px]"
+              >
+                {quantityInCart}
+              </Badge>
+            )}
           </Button>
         </div>
       </div>

@@ -1,6 +1,9 @@
-import { atom } from "nanostores";
+import { persistentAtom } from "@nanostores/persistent";
 
-export const wishlistProducts = atom<number[]>([]);
+export const wishlistProducts = persistentAtom<number[]>("wishlist", [], {
+  encode: JSON.stringify,
+  decode: JSON.parse,
+});
 
 export const addToWishlist = (productId: number) => {
   wishlistProducts.set([...wishlistProducts.get(), productId]);

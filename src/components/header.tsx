@@ -16,7 +16,7 @@ export function Header({ pathname = "/" }: HeaderProps) {
   const cartItems = useStore(cartProducts);
   const wishlistItems = useStore(wishlistProducts);
 
-  const cartItemCount = cartItems.length;
+  const cartItemCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
   const wishlistCount = wishlistItems.length;
 
   // Mocked for now as Auth is not implemented
@@ -32,7 +32,7 @@ export function Header({ pathname = "/" }: HeaderProps) {
 
   return (
     <header className="border-border bg-card sticky top-0 z-50 w-full border-b shadow-sm">
-      <div className="container mx-auto px-4">
+      <div className="container mx-auto max-w-7xl">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <a href="/" className="flex items-center space-x-2">
@@ -43,7 +43,7 @@ export function Header({ pathname = "/" }: HeaderProps) {
             </div>
             <div className="hidden sm:block">
               <span className="text-foreground text-lg font-semibold">
-                Indo Presisi
+                HaeBot Store
               </span>
               <p className="text-muted-foreground text-xs">Suku Cadang CNC</p>
             </div>
@@ -81,7 +81,7 @@ export function Header({ pathname = "/" }: HeaderProps) {
             >
               <Heart className="h-5 w-5" />
               {wishlistCount > 0 && (
-                <Badge className="bg-accent text-accent-foreground absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full p-0 text-xs">
+                <Badge className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full p-0 text-xs">
                   {wishlistCount}
                 </Badge>
               )}
@@ -99,7 +99,7 @@ export function Header({ pathname = "/" }: HeaderProps) {
             >
               <ShoppingCart className="h-5 w-5" />
               {cartItemCount > 0 && (
-                <Badge className="bg-accent text-accent-foreground absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full p-0 text-xs">
+                <Badge className="absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full p-0 text-xs">
                   {cartItemCount}
                 </Badge>
               )}

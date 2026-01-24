@@ -1,9 +1,10 @@
 ---
 import BaseLayout from "@/layouts/base-layout.astro";
+import { actions } from "astro:actions";
+import { Picture } from "astro:assets";
 import { ProductCard } from "@/modules/products/components/product-card";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { actions } from "astro:actions";
 import {
   ArrowRight,
   Search,
@@ -13,13 +14,14 @@ import {
   Package,
 } from "lucide-react";
 import type { ForwardRefExoticComponent } from "react";
+import bgHero from "@/assets/bg-hero.jpg";
 
 export const prerender = false;
 
 // Server-side data fetching
 const { data, error } = await Astro.callAction(actions.getProductsAction, {
   type: "full",
-  limit: 6,
+  limit: 8,
 });
 
 const products = data?.data || [];
@@ -56,21 +58,24 @@ const categories: ICategory[] = [
     icon: Package,
   },
 ];
-
-// Use a placeholder image since the asset is missing
-const heroBgUrl =
-  "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 ---
 
-<BaseLayout title="Haebot Commerce - Suku Cadang Presisi">
+<BaseLayout title="Haebot Store - Suku Cadang CNC">
   {/* Hero Section */}
   <section class="relative flex min-h-[500px] items-center lg:min-h-[600px]">
-    <div
-      class="absolute inset-0 bg-cover bg-center"
-      style={`background-image: url('${heroBgUrl}')`}
-    >
+    <div class="absolute inset-0 overflow-hidden">
+      <Picture
+        src={bgHero}
+        formats={["avif", "webp"]}
+        alt=""
+        aria-label=""
+        aria-hidden="true"
+        loading="eager"
+        fetchpriority="high"
+        class="absolute inset-0 bg-cover bg-bottom"
+      />
       <div
-        class="from-primary/95 via-primary/80 to-primary/60 absolute inset-0 bg-linear-to-r"
+        class="from-primary/75 via-primary/50 to-primary/25 absolute inset-0 bg-linear-to-r"
       >
       </div>
     </div>
@@ -113,28 +118,15 @@ const heroBgUrl =
         </form>
 
         <div class="flex flex-wrap gap-4">
-          <a
-            href="/katalog"
-            class={buttonVariants({
-              size: "lg",
-              className: "bg-accent text-accent-foreground hover:bg-accent/90",
-            })}
-          >
-            Lihat Katalog
-            <ArrowRight className="ml-2 h-5 w-5" />
+          <a href="/katalog">
+            <Button variant="secondary">Lihat Katalog</Button>
           </a>
           <a
-            href="https://wa.me/6221234567890"
+            href="https://wa.me/6285246428746"
             target="_blank"
             rel="noopener noreferrer"
-            class={buttonVariants({
-              size: "lg",
-              variant: "outline",
-              className:
-                "border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10",
-            })}
           >
-            Hubungi Sales
+            <Button variant="secondary">Hubungi Sales</Button>
           </a>
         </div>
       </div>
@@ -156,12 +148,12 @@ const heroBgUrl =
             return (
               <a
                 href={`/katalog?category=${category.slug}`}
-                class="card-industrial group hover:border-accent block rounded-lg border p-6 text-center transition-colors"
+                class="group hover:border-accent block rounded-lg border p-6 text-center transition-colors"
               >
-                <div class="bg-secondary group-hover:bg-accent/10 mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full transition-colors">
-                  <Icon className="h-8 w-8 text-primary group-hover:text-accent transition-colors" />
+                <div class="bg-secondary mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full">
+                  <Icon className="h-8 w-8 text-primary" />
                 </div>
-                <h3 class="text-foreground group-hover:text-accent font-semibold transition-colors">
+                <h3 class="text-foreground group-font-semibold">
                   {category.label}
                 </h3>
               </a>
@@ -191,9 +183,9 @@ const heroBgUrl =
             Error loading products: {error.message}
           </div>
         ) : (
-          <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
             {products.map((product) => (
-              <ProductCard client:load product={product} />
+              <ProductCard client:visible product={product} />
             ))}
             {products.length === 0 && (
               <p class="col-span-full py-10 text-center text-gray-500">
@@ -208,7 +200,7 @@ const heroBgUrl =
 
   {/* Trust Indicators */}
   <section class="bg-primary text-primary-foreground py-16">
-    <div class="container mx-auto px-4">
+    <div class="container mx-auto max-w-7xl px-4">
       <div class="grid grid-cols-2 gap-8 text-center md:grid-cols-4">
         <div>
           <div class="text-accent mb-2 text-3xl font-bold md:text-4xl">14+</div>
@@ -240,7 +232,7 @@ const heroBgUrl =
 
   {/* CTA Section */}
   <section class="bg-background py-16">
-    <div class="container mx-auto px-4 text-center">
+    <div class="container mx-auto max-w-7xl px-4 text-center">
       <h2 class="text-foreground mb-4 text-2xl font-bold md:text-3xl">
         Butuh Bantuan Mencari Suku Cadang?
       </h2>
@@ -250,7 +242,7 @@ const heroBgUrl =
         gratis.
       </p>
       <a
-        href="https://wa.me/6221234567890"
+        href="https://wa.me/6285246428746"
         target="_blank"
         rel="noopener noreferrer"
         class={buttonVariants({

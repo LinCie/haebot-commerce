@@ -4,7 +4,7 @@ import { Phone, Mail, MapPin } from "lucide-react";
 export function Footer() {
   return (
     <footer className="border-border bg-primary text-primary-foreground border-t">
-      <div className="container mx-auto px-4 py-12">
+      <div className="container mx-auto max-w-7xl px-4 py-12">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-4">
           {/* Company Info */}
           <div className="space-y-4">
@@ -15,7 +15,7 @@ export function Footer() {
                 </span>
               </div>
               <div>
-                <span className="text-lg font-semibold">Indo Presisi</span>
+                <span className="text-lg font-semibold">HaeBot Store</span>
                 <p className="text-primary-foreground/70 text-xs">
                   Suku Cadang CNC
                 </p>
@@ -23,7 +23,7 @@ export function Footer() {
             </div>
             <p className="text-primary-foreground/80 text-sm">
               Penyedia suku cadang dan peralatan CNC berkualitas tinggi untuk
-              industri pemesinan Indonesia sejak 2010.
+              industri pemesinan Indonesia sejak 2018.
             </p>
           </div>
 
@@ -106,23 +106,23 @@ export function Footer() {
               <li className="flex items-center space-x-2">
                 <Phone className="text-accent h-4 w-4" />
                 <span className="text-primary-foreground/80">
-                  +62 21 1234 5678
+                  (+62) 852-4642-8746
                 </span>
               </li>
               <li className="flex items-center space-x-2">
                 <Mail className="text-accent h-4 w-4" />
                 <span className="text-primary-foreground/80">
-                  sales@indopresisi.co.id
+                  sales@haebot.com
                 </span>
               </li>
               <li className="flex items-start space-x-2">
                 <MapPin className="text-accent mt-0.5 h-4 w-4" />
                 <span className="text-primary-foreground/80">
-                  Jl. Industri Raya No. 123
+                  Jl. Kolonel Sugiono No.22, Gedog,
                   <br />
-                  Kawasan Industri MM2100
+                  Kec. Sananwetan, Kota Blitar,
                   <br />
-                  Bekasi, Jawa Barat 17520
+                  Jawa Timur 66137
                 </span>
               </li>
             </ul>
@@ -130,7 +130,7 @@ export function Footer() {
         </div>
 
         <div className="border-primary-foreground/20 text-primary-foreground/60 mt-8 border-t pt-8 text-center text-sm">
-          <p>© 2024 Indo Presisi. Semua hak dilindungi.</p>
+          <p>© 2025 PT Haebot Teknologi Indonesia. Semua hak dilindungi.</p>
         </div>
       </div>
     </footer>
