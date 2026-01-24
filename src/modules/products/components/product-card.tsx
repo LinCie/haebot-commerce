@@ -83,58 +83,68 @@ export function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <a href={`/produk/${product.id}`} className="block h-full">
-      <div className="card-industrial group bg-card text-card-foreground flex h-full flex-col overflow-hidden rounded-lg border transition-shadow hover:shadow-lg">
-        {/* Image */}
-        <div className="bg-secondary/50 relative aspect-square overflow-hidden">
-          <img
-            src={imageUrl}
-            alt={product.name}
-            className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
-          />
-          <div className="absolute top-2 right-2 opacity-0 transition-opacity group-hover:opacity-100">
-            <Button
-              variant="secondary"
-              size="icon"
-              className="h-8 w-8 rounded-full shadow-md"
-              onClick={handleToggleWishlist}
-            >
-              <Heart
-                className={`h-4 w-4 ${inWishlist ? "fill-red-500 text-red-500" : ""}`}
-              />
-            </Button>
-          </div>
-        </div>
+    <div className="card-industrial group bg-card text-card-foreground relative flex h-full flex-col overflow-hidden rounded-lg border transition-shadow hover:shadow-lg">
+      <a
+        href={`/produk/${product.id}`}
+        className="absolute inset-0 z-0 focus:outline-none"
+        aria-label={`Lihat detail ${product.name}`}
+      >
+        <span className="sr-only">Lihat detail {product.name}</span>
+      </a>
 
-        {/* Content */}
-        <div className="flex flex-1 flex-col p-4">
-          <div className="mb-2 flex items-center justify-between">
-            <span className="text-muted-foreground text-xs">{product.sku}</span>
-            <span className={getStockBadgeClass()}>
-              {stockStatusLabels[stockStatus]}
-            </span>
-          </div>
-
-          <h3 className="text-foreground group-hover:text-primary mb-1 line-clamp-2 font-medium transition-colors">
-            {product.name}
-          </h3>
-
-          <div className="mt-auto flex items-center justify-between">
-            <span className="text-lg font-bold">
-              {formatPrice(product.price)}
-            </span>
-            <Button
-              size="sm"
-              variant="default"
-              className="bg-primary text-primary-foreground hover:bg-primary/90"
-              onClick={handleAddToCart}
-              disabled={stockStatus === "out-of-stock"}
-            >
-              <ShoppingCart className="h-4 w-4" />
-            </Button>
-          </div>
+      {/* Image */}
+      <div className="bg-secondary/50 relative aspect-square overflow-hidden">
+        <img
+          src={imageUrl}
+          alt={product.name}
+          className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+        />
+        <div className="absolute top-2 right-2 z-10 opacity-0 transition-opacity group-hover:opacity-100">
+          <Button
+            variant="secondary"
+            size="icon"
+            className="h-8 w-8 rounded-full shadow-md"
+            onClick={handleToggleWishlist}
+            aria-label={
+              inWishlist ? "Hapus dari wishlist" : "Tambah ke wishlist"
+            }
+          >
+            <Heart
+              className={`h-4 w-4 ${inWishlist ? "fill-red-500 text-red-500" : ""}`}
+            />
+          </Button>
         </div>
       </div>
-    </a>
+
+      {/* Content */}
+      <div className="pointer-events-none flex flex-1 flex-col p-4">
+        <div className="mb-2 flex items-center justify-between">
+          <span className="text-muted-foreground text-xs">{product.sku}</span>
+          <span className={getStockBadgeClass()}>
+            {stockStatusLabels[stockStatus]}
+          </span>
+        </div>
+
+        <h3 className="text-foreground group-hover:text-primary mb-1 line-clamp-2 font-medium transition-colors">
+          {product.name}
+        </h3>
+
+        <div className="pointer-events-auto mt-auto flex items-center justify-between">
+          <span className="text-lg font-bold">
+            {formatPrice(product.price)}
+          </span>
+          <Button
+            size="sm"
+            variant="default"
+            className="bg-primary text-primary-foreground hover:bg-primary/90 relative z-10"
+            onClick={handleAddToCart}
+            disabled={stockStatus === "out-of-stock"}
+            aria-label={`Tambah ${product.name} ke keranjang`}
+          >
+            <ShoppingCart className="h-4 w-4" />
+          </Button>
+        </div>
+      </div>
+    </div>
   );
 }

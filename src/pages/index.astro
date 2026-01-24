@@ -1,7 +1,7 @@
 ---
 import BaseLayout from "@/layouts/base-layout.astro";
 import { ProductCard } from "@/modules/products/components/product-card";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { actions } from "astro:actions";
 import {
@@ -99,6 +99,7 @@ const heroBgUrl =
                 name="search"
                 placeholder="Cari berdasarkan SKU, Nama Bagian, atau Model Mesin..."
                 className="bg-card border-border h-14 pl-12 font-mono text-base"
+                aria-label="Cari produk"
               />
             </div>
             <Button
@@ -112,27 +113,28 @@ const heroBgUrl =
         </form>
 
         <div class="flex flex-wrap gap-4">
-          <a href="/katalog">
-            <Button
-              size="lg"
-              className="bg-accent text-accent-foreground hover:bg-accent/90"
-            >
-              Lihat Katalog
-              <ArrowRight className="ml-2 h-5 w-5" />
-            </Button>
+          <a
+            href="/katalog"
+            class={buttonVariants({
+              size: "lg",
+              className: "bg-accent text-accent-foreground hover:bg-accent/90",
+            })}
+          >
+            Lihat Katalog
+            <ArrowRight className="ml-2 h-5 w-5" />
           </a>
           <a
             href="https://wa.me/6221234567890"
             target="_blank"
             rel="noopener noreferrer"
+            class={buttonVariants({
+              size: "lg",
+              variant: "outline",
+              className:
+                "border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10",
+            })}
           >
-            <Button
-              size="lg"
-              variant="outline"
-              className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10"
-            >
-              Hubungi Sales
-            </Button>
+            Hubungi Sales
           </a>
         </div>
       </div>
@@ -177,11 +179,9 @@ const heroBgUrl =
         <h2 class="text-foreground text-2xl font-bold md:text-3xl">
           Produk Unggulan
         </h2>
-        <a href="/katalog">
-          <Button variant="outline">
-            Lihat Semua
-            <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
+        <a href="/katalog" class={buttonVariants({ variant: "outline" })}>
+          Lihat Semua
+          <ArrowRight className="ml-2 h-4 w-4" />
         </a>
       </div>
 
@@ -253,14 +253,13 @@ const heroBgUrl =
         href="https://wa.me/6221234567890"
         target="_blank"
         rel="noopener noreferrer"
+        class={buttonVariants({
+          size: "lg",
+          className: "bg-accent text-accent-foreground hover:bg-accent/90",
+        })}
       >
-        <Button
-          size="lg"
-          className="bg-accent text-accent-foreground hover:bg-accent/90"
-        >
-          Chat via WhatsApp
-          <ArrowRight className="ml-2 h-5 w-5" />
-        </Button>
+        Chat via WhatsApp
+        <ArrowRight className="ml-2 h-5 w-5" />
       </a>
     </div>
   </section>

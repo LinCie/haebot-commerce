@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useStore } from "@nanostores/react";
 import { cartProducts } from "@/modules/cart/stores/cart.store";
 import { wishlistProducts } from "@/modules/wishlist/stores/wishlist.store";
-import { Button } from "@/components/ui/button";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 
 interface HeaderProps {
@@ -69,27 +69,40 @@ export function Header({ pathname = "/" }: HeaderProps) {
           {/* Actions */}
           <div className="flex items-center space-x-2">
             {/* Wishlist */}
-            <a href="/wishlist">
-              <Button variant="ghost" size="icon" className="relative">
-                <Heart className="h-5 w-5" />
-                {wishlistCount > 0 && (
-                  <Badge className="bg-accent text-accent-foreground absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full p-0 text-xs">
-                    {wishlistCount}
-                  </Badge>
-                )}
-              </Button>
+            {/* Wishlist */}
+            <a
+              href="/wishlist"
+              className={buttonVariants({
+                variant: "ghost",
+                size: "icon",
+                className: "relative",
+              })}
+              aria-label="Wishlist"
+            >
+              <Heart className="h-5 w-5" />
+              {wishlistCount > 0 && (
+                <Badge className="bg-accent text-accent-foreground absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full p-0 text-xs">
+                  {wishlistCount}
+                </Badge>
+              )}
             </a>
 
             {/* Cart */}
-            <a href="/keranjang">
-              <Button variant="ghost" size="icon" className="relative">
-                <ShoppingCart className="h-5 w-5" />
-                {cartItemCount > 0 && (
-                  <Badge className="bg-accent text-accent-foreground absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full p-0 text-xs">
-                    {cartItemCount}
-                  </Badge>
-                )}
-              </Button>
+            <a
+              href="/keranjang"
+              className={buttonVariants({
+                variant: "ghost",
+                size: "icon",
+                className: "relative",
+              })}
+              aria-label="Keranjang Belanja"
+            >
+              <ShoppingCart className="h-5 w-5" />
+              {cartItemCount > 0 && (
+                <Badge className="bg-accent text-accent-foreground absolute -top-1 -right-1 flex h-5 w-5 items-center justify-center rounded-full p-0 text-xs">
+                  {cartItemCount}
+                </Badge>
+              )}
             </a>
 
             {/* User - Mocked/Simplified */}
@@ -101,11 +114,12 @@ export function Header({ pathname = "/" }: HeaderProps) {
                 </Button>
               </div>
             ) : (
-              <a href="/login" className="hidden sm:block">
-                <Button variant="outline" size="sm">
-                  <User className="mr-2 h-4 w-4" />
-                  Masuk
-                </Button>
+              <a
+                href="/login"
+                className={`hidden sm:flex ${buttonVariants({ variant: "outline", size: "sm" })}`}
+              >
+                <User className="mr-2 h-4 w-4" />
+                Masuk
               </a>
             )}
 
@@ -115,6 +129,7 @@ export function Header({ pathname = "/" }: HeaderProps) {
               size="icon"
               className="md:hidden"
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              aria-label={mobileMenuOpen ? "Tutup menu" : "Buka menu"}
             >
               {mobileMenuOpen ? (
                 <X className="h-5 w-5" />
