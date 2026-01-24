@@ -14,6 +14,8 @@ import {
 } from "lucide-react";
 import type { ForwardRefExoticComponent } from "react";
 
+export const prerender = false;
+
 // Server-side data fetching
 const { data, error } = await Astro.callAction(actions.getProductsAction, {
   type: "full",

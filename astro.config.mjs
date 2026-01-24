@@ -5,12 +5,16 @@ import tailwindcss from "@tailwindcss/vite";
 
 import react from "@astrojs/react";
 
+import cloudflare from "@astrojs/cloudflare";
+
 // https://astro.build/config
 export default defineConfig({
   site: import.meta.env.APP_URL,
+
   vite: {
     plugins: [tailwindcss()],
   },
+
   integrations: [
     react({
       babel: {
@@ -18,4 +22,6 @@ export default defineConfig({
       },
     }),
   ],
+
+  adapter: cloudflare({ imageService: "compile" }),
 });
