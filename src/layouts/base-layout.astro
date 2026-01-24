@@ -1,0 +1,33 @@
+---
+import "@/shared/styles/global.css";
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "Jual perlengkapan industri CNC terlengkap" } =
+  Astro.props;
+
+import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
+---
+
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="description" content={description} />
+    <meta name="viewport" content="width=device-width" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <title>{title}</title>
+  </head>
+  <body class="bg-background flex min-h-screen flex-col font-sans antialiased">
+    <Header client:load pathname={Astro.url.pathname} />
+    <main class="flex-1">
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>

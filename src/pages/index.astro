@@ -1,9 +1,265 @@
 ---
-import "@/shared/styles/global.css";
+import BaseLayout from "@/layouts/base-layout.astro";
+import { ProductCard } from "@/modules/products/components/product-card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { actions } from "astro:actions";
+import {
+  ArrowRight,
+  Search,
+  Wrench,
+  Settings,
+  Cog,
+  Package,
+} from "lucide-react";
+import type { ForwardRefExoticComponent } from "react";
 
-import { Button } from "../components/ui/button";
+// Server-side data fetching
+const { data, error } = await Astro.callAction(actions.getProductsAction, {
+  type: "full",
+  limit: 6,
+});
+
+const products = data?.data || [];
+
+interface ICategory {
+  id: string;
+  label: string;
+  slug: string;
+  icon: ForwardRefExoticComponent<React.SVGProps<SVGSVGElement>>;
+}
+const categories: ICategory[] = [
+  {
+    id: "milling",
+    label: "Milling",
+    slug: "milling",
+    icon: Wrench,
+  },
+  {
+    id: "turning",
+    label: "Turning",
+    slug: "turning",
+    icon: Settings,
+  },
+  {
+    id: "spare-parts",
+    label: "Spare Parts",
+    slug: "spare-parts",
+    icon: Cog,
+  },
+  {
+    id: "tooling",
+    label: "Tooling",
+    slug: "tooling",
+    icon: Package,
+  },
+];
+
+// Use a placeholder image since the asset is missing
+const heroBgUrl =
+  "https://images.unsplash.com/photo-1581091226825-a6a2a5aee158?q=80&w=2070&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D";
 ---
 
-<div class="flex h-screen items-center justify-center">
-  <Button>Button</Button>
-</div>
+<BaseLayout title="Haebot Commerce - Suku Cadang Presisi">
+  {/* Hero Section */}
+  <section class="relative flex min-h-[500px] items-center lg:min-h-[600px]">
+    <div
+      class="absolute inset-0 bg-cover bg-center"
+      style={`background-image: url('${heroBgUrl}')`}
+    >
+      <div
+        class="from-primary/95 via-primary/80 to-primary/60 absolute inset-0 bg-linear-to-r"
+      >
+      </div>
+    </div>
+
+    <div class="relative z-10 container mx-auto max-w-7xl px-4">
+      <div class="max-w-2xl">
+        <h1
+          class="text-primary-foreground mb-4 text-3xl leading-tight font-bold md:text-4xl lg:text-5xl"
+        >
+          Suku Cadang Presisi untuk Pemesinan Profesional
+        </h1>
+        <p class="text-primary-foreground/80 mb-8 text-lg md:text-xl">
+          Distributor terpercaya untuk peralatan CNC, suku cadang mesin, dan
+          tooling berkualitas tinggi di Indonesia.
+        </p>
+
+        {/* Search Bar - using standard form for navigation */}
+        <form action="/katalog" method="get" class="mb-8">
+          <div class="flex gap-2">
+            <div class="relative flex-1">
+              <Search
+                className="text-muted-foreground absolute top-1/2 left-4 h-5 w-5 -translate-y-1/2"
+              />
+              <Input
+                type="text"
+                name="search"
+                placeholder="Cari berdasarkan SKU, Nama Bagian, atau Model Mesin..."
+                className="bg-card border-border h-14 pl-12 font-mono text-base"
+              />
+            </div>
+            <Button
+              type="submit"
+              size="lg"
+              className="bg-accent text-accent-foreground hover:bg-accent/90 h-14 px-8"
+            >
+              Cari
+            </Button>
+          </div>
+        </form>
+
+        <div class="flex flex-wrap gap-4">
+          <a href="/katalog">
+            <Button
+              size="lg"
+              className="bg-accent text-accent-foreground hover:bg-accent/90"
+            >
+              Lihat Katalog
+              <ArrowRight className="ml-2 h-5 w-5" />
+            </Button>
+          </a>
+          <a
+            href="https://wa.me/6221234567890"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <Button
+              size="lg"
+              variant="outline"
+              className="border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/10"
+            >
+              Hubungi Sales
+            </Button>
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* Categories */}
+  <section class="bg-background mx-auto max-w-7xl py-16">
+    <div class="container mx-auto px-4">
+      <h2
+        class="text-foreground mb-8 text-center text-2xl font-bold md:text-3xl"
+      >
+        Kategori Produk
+      </h2>
+      <div class="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
+        {
+          categories.map((category) => {
+            const Icon = category.icon;
+            return (
+              <a
+                href={`/katalog?category=${category.slug}`}
+                class="card-industrial group hover:border-accent block rounded-lg border p-6 text-center transition-colors"
+              >
+                <div class="bg-secondary group-hover:bg-accent/10 mx-auto mb-4 flex h-16 w-16 items-center justify-center rounded-full transition-colors">
+                  <Icon className="h-8 w-8 text-primary group-hover:text-accent transition-colors" />
+                </div>
+                <h3 class="text-foreground group-hover:text-accent font-semibold transition-colors">
+                  {category.label}
+                </h3>
+              </a>
+            );
+          })
+        }
+      </div>
+    </div>
+  </section>
+
+  {/* Featured Products */}
+  <section class="bg-secondary/30 mx-auto max-w-7xl py-16">
+    <div class="container mx-auto px-4">
+      <div class="mb-8 flex items-center justify-between">
+        <h2 class="text-foreground text-2xl font-bold md:text-3xl">
+          Produk Unggulan
+        </h2>
+        <a href="/katalog">
+          <Button variant="outline">
+            Lihat Semua
+            <ArrowRight className="ml-2 h-4 w-4" />
+          </Button>
+        </a>
+      </div>
+
+      {
+        error ? (
+          <div class="rounded-md border border-red-200 bg-red-50 p-4 text-red-500">
+            Error loading products: {error.message}
+          </div>
+        ) : (
+          <div class="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {products.map((product) => (
+              <ProductCard client:load product={product} />
+            ))}
+            {products.length === 0 && (
+              <p class="col-span-full py-10 text-center text-gray-500">
+                Belum ada produk unggulan.
+              </p>
+            )}
+          </div>
+        )
+      }
+    </div>
+  </section>
+
+  {/* Trust Indicators */}
+  <section class="bg-primary text-primary-foreground py-16">
+    <div class="container mx-auto px-4">
+      <div class="grid grid-cols-2 gap-8 text-center md:grid-cols-4">
+        <div>
+          <div class="text-accent mb-2 text-3xl font-bold md:text-4xl">14+</div>
+          <div class="text-primary-foreground/80 text-sm">Tahun Pengalaman</div>
+        </div>
+        <div>
+          <div class="text-accent mb-2 text-3xl font-bold md:text-4xl">
+            500+
+          </div>
+          <div class="text-primary-foreground/80 text-sm">
+            Pelanggan Industri
+          </div>
+        </div>
+        <div>
+          <div class="text-accent mb-2 text-3xl font-bold md:text-4xl">
+            10K+
+          </div>
+          <div class="text-primary-foreground/80 text-sm">SKU Tersedia</div>
+        </div>
+        <div>
+          <div class="text-accent mb-2 text-3xl font-bold md:text-4xl">
+            24/7
+          </div>
+          <div class="text-primary-foreground/80 text-sm">Dukungan Teknis</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {/* CTA Section */}
+  <section class="bg-background py-16">
+    <div class="container mx-auto px-4 text-center">
+      <h2 class="text-foreground mb-4 text-2xl font-bold md:text-3xl">
+        Butuh Bantuan Mencari Suku Cadang?
+      </h2>
+      <p class="text-muted-foreground mx-auto mb-8 max-w-2xl">
+        Tim teknisi kami siap membantu Anda menemukan suku cadang yang tepat
+        untuk mesin CNC Anda. Hubungi kami melalui WhatsApp untuk konsultasi
+        gratis.
+      </p>
+      <a
+        href="https://wa.me/6221234567890"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <Button
+          size="lg"
+          className="bg-accent text-accent-foreground hover:bg-accent/90"
+        >
+          Chat via WhatsApp
+          <ArrowRight className="ml-2 h-5 w-5" />
+        </Button>
+      </a>
+    </div>
+  </section>
+</BaseLayout>
