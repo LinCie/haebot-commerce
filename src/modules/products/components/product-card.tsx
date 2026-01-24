@@ -89,6 +89,8 @@ export function ProductCard({ product }: ProductCardProps) {
           src={imageUrl}
           alt={product.name}
           className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-105"
+          loading="lazy"
+          fetchPriority="low"
         />
         <div className="absolute top-2 right-2 z-10 opacity-0 transition-opacity group-hover:opacity-100">
           <Button
