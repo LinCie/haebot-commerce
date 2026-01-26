@@ -11,6 +11,7 @@ const { title, description = "Jual perlengkapan industri CNC terlengkap" } =
 
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
+import { Toaster } from "@/components/ui/sonner";
 ---
 
 <!doctype html>
@@ -29,5 +30,6 @@ import { Footer } from "@/components/footer";
       <slot />
     </main>
     <Footer />
+    <Toaster client:load />
   </body>
 </html>
