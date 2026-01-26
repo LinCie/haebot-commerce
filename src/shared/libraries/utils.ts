@@ -7,6 +7,6 @@ export function cn(...inputs: ClassValue[]) {
 
 export function prefixImageUrl(url: string, isNew: boolean) {
   return isNew
-    ? `${import.meta.env.R2_URL}/${url}`
-    : `${import.meta.env.LARAVEL_STORAGE ?? "http://localhost:8000"}/${url}`;
+    ? `${import.meta.env.PUBLIC_R2_URL}/${url}`
+    : `${import.meta.env.PUBLIC_LARAVEL_STORAGE ?? "http://localhost:8000"}/${url}`;
 }
