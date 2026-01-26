@@ -1,0 +1,59 @@
+---
+export const prerender = false;
+
+import BaseLayout from "@/layouts/base-layout.astro";
+import { ProductDetail } from "@/modules/products/components/product-detail";
+import { actions } from "astro:actions";
+import { prefixImageUrl } from "@/shared/libraries/utils";
+
+const { id } = Astro.params;
+
+if (!id || isNaN(Number(id))) {
+  return Astro.redirect("/katalog");
+}
+
+let product;
+try {
+  const { data, error } = await Astro.callAction(actions.getProductAction, {
+    productId: Number(id),
+    searchParams: { withInventory: true },
+  });
+
+  if (error) {
+    console.error("Failed to fetch product:", error);
+    return Astro.redirect("/katalog");
+  }
+
+  product = data;
+} catch (error) {
+  console.error("Failed to fetch product:", error);
+  return Astro.redirect("/katalog");
+}
+
+if (!product) {
+  return Astro.redirect("/katalog");
+}
+
+// SEO Data
+const siteName = "Haebot Commerce";
+const pageTitle = `${product.name} | ${siteName}`;
+const pageDescription =
+  product.description?.slice(0, 160) ||
+  `Beli ${product.name} di ${siteName}. Perlengkapan industri CNC terlengkap.`;
+
+const ogImageUrl = product.images?.[0]?.path
+  ? prefixImageUrl(product.images[0].path, product.images[0].isNew || false)
+  : undefined;
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <head slot="head">
+    <meta property="og:title" content={pageTitle} />
+    <meta property="og:description" content={pageDescription} />
+    <meta property="og:type" content="product" />
+    <meta property="og:url" content={Astro.url.pathname} />
+    {ogImageUrl && <meta property="og:image" content={ogImageUrl} />}
+  </head>
+
+  <ProductDetail client:load product={product} />
+</BaseLayout>

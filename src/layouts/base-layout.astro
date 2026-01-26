@@ -23,6 +23,7 @@ import { Toaster } from "@/components/ui/sonner";
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
     <title>{title}</title>
+    <slot name="head" />
   </head>
   <body class="bg-background flex min-h-screen flex-col font-sans antialiased">
     <Header client:load pathname={Astro.url.pathname} />
