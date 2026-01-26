@@ -11,32 +11,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { prefixImageUrl } from "@/shared/libraries/utils";
-
-// Helper for formatting price
-const formatPrice = (price: string | number) => {
-  const numPrice = typeof price === "string" ? parseFloat(price) : price;
-  return new Intl.NumberFormat("id-ID", {
-    style: "currency",
-    currency: "IDR",
-    minimumFractionDigits: 0,
-    maximumFractionDigits: 0,
-  }).format(numPrice);
-};
-
-// Helper for stock calculation
-const getStockStatus = (inventories: Product["inventories"]) => {
-  if (!inventories) return "out-of-stock";
-  const totalBalance = inventories.reduce((sum, inv) => sum + inv.balance, 0);
-  if (totalBalance <= 0) return "out-of-stock";
-  if (totalBalance < 5) return "low-stock";
-  return "in-stock";
-};
-
-const stockStatusLabels: Record<string, string> = {
-  "in-stock": "Tersedia",
-  "low-stock": "Stok Menipis",
-  "out-of-stock": "Habis",
-};
+import placeholderImg from "@/assets/placeholder.jpg";
+import { toast } from "sonner";
+import {
+  formatPrice,
+  getStockStatus,
+  stockStatusLabels,
+} from "@/modules/products/utils";
 
 interface ProductCardProps {
   product: Product;
@@ -51,16 +32,18 @@ export function ProductCard({ product }: ProductCardProps) {
   const quantityInCart = cartItem ? cartItem.quantity : 0;
 
   const stockStatus = getStockStatus(product.inventories);
-  const imageUrl = prefixImageUrl(
-    product.images?.[0]?.path || "",
-    product.images?.[0]?.isNew || false,
-  );
+  const imagePath = product.images?.[0]?.path;
+  const imageUrl = imagePath
+    ? prefixImageUrl(imagePath, product.images?.[0]?.isNew || false)
+    : placeholderImg.src;
 
   const handleAddToCart = (e: React.MouseEvent) => {
     e.preventDefault();
     e.stopPropagation();
     addToCart(product.id);
-    console.log("Produk ditambahkan ke keranjang", product.name);
+    toast.success("Produk ditambahkan ke keranjang", {
+      description: product.name,
+    });
   };
 
   const handleToggleWishlist = (e: React.MouseEvent) => {
@@ -68,8 +51,10 @@ export function ProductCard({ product }: ProductCardProps) {
     e.stopPropagation();
     if (inWishlist) {
       removeFromWishlist(product.id);
+      toast.info("Produk dihapus dari wishlist");
     } else {
       addToWishlist(product.id);
+      toast.success("Produk ditambahkan ke wishlist");
     }
   };
 
