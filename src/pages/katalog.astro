@@ -1,0 +1,18 @@
+---
+import BaseLayout from "@/layouts/base-layout.astro";
+import { CataloguePage } from "@/modules/products/components/catalogue-page";
+import type { Category } from "@/modules/products/types";
+
+const category = Astro.url.searchParams.get("category") as Category | null;
+const search = Astro.url.searchParams.get("search");
+const page = Astro.url.searchParams.get("page");
+---
+
+<BaseLayout title="Katalog Produk | Haebot Commerce">
+  <CataloguePage
+    client:load
+    initialCategory={category || undefined}
+    initialSearch={search || undefined}
+    initialPage={page ? parseInt(page, 10) : 1}
+  />
+</BaseLayout>
