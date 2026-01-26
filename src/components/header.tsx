@@ -32,7 +32,7 @@ export function Header({ pathname = "/" }: HeaderProps) {
 
   return (
     <header className="border-border bg-card sticky top-0 z-50 w-full border-b shadow-sm">
-      <div className="container mx-auto max-w-7xl">
+      <div className="container mx-auto max-w-7xl px-4">
         <div className="flex h-16 items-center justify-between">
           {/* Logo */}
           <a href="/" className="flex items-center space-x-2">
