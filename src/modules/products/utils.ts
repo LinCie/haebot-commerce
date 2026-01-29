@@ -20,6 +20,12 @@ export const getStockStatus = (inventories: Product["inventories"]) => {
   return "in-stock";
 };
 
+// Helper to get total stock count
+export const getTotalStock = (inventories: Product["inventories"]) => {
+  if (!inventories) return 0;
+  return inventories.reduce((sum, inv) => sum + inv.balance, 0);
+};
+
 export const stockStatusLabels: Record<string, string> = {
   "in-stock": "Tersedia",
   "low-stock": "Stok Menipis",

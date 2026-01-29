@@ -1,0 +1,10 @@
+---
+import BaseLayout from "@/layouts/base-layout.astro";
+import CartPageReact from "@/modules/cart/components/cart-page";
+
+export const prerender = false;
+---
+
+<BaseLayout title="Keranjang Belanja" description="Lihat daftar belanjaan Anda">
+  <CartPageReact client:only="react" />
+</BaseLayout>
