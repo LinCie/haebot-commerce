@@ -1,0 +1,13 @@
+---
+import BaseLayout from "@/layouts/base-layout.astro";
+import WishlistPageReact from "@/modules/wishlist/components/wishlist-page";
+
+export const prerender = false;
+---
+
+<BaseLayout
+  title="Wishlist Saya"
+  description="Lihat produk yang Anda simpan di wishlist"
+>
+  <WishlistPageReact client:only="react" />
+</BaseLayout>
