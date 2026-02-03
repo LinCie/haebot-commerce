@@ -218,7 +218,7 @@ export default function CartPage() {
               </div>
             </div>
 
-            <a href="/checkout">
+            <a href="/bayar">
               <Button className="w-full" size="lg">
                 Lanjut ke Checkout
                 <ArrowRight className="ml-2 h-4 w-4" />
