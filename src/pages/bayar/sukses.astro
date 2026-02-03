@@ -1,0 +1,142 @@
+---
+import BaseLayout from "@/layouts/base-layout.astro";
+import { CheckCircle2 } from "lucide-react";
+---
+
+<BaseLayout title="Pesanan Berhasil | Haebot Commerce">
+  <div class="bg-background min-h-screen">
+    <div class="mx-auto max-w-3xl px-4 py-12 sm:px-6 lg:px-8">
+      <div class="bg-card rounded-lg border p-8 text-center shadow-sm">
+        <div class="mb-6 flex justify-center">
+          <CheckCircle2 className="h-16 w-16 text-green-500" />
+        </div>
+
+        <h1 class="mb-2 text-3xl font-bold">Pesanan Berhasil!</h1>
+        <p class="text-muted-foreground mb-8">
+          Terima kasih telah berbelanja. Pesanan Anda telah berhasil dibuat.
+        </p>
+
+        <div id="success-content" class="space-y-6">
+          <!-- Content will be populated by client-side script -->
+        </div>
+
+        <div class="mt-8 flex flex-col gap-4 sm:flex-row sm:justify-center">
+          <a
+            id="whatsapp-link"
+            href="#"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="inline-flex items-center justify-center rounded-md bg-green-600 px-8 py-3 text-base font-medium text-white hover:bg-green-700"
+          >
+            Lanjutkan ke WhatsApp
+          </a>
+
+          <a
+            href="/katalog"
+            class="hover:bg-accent inline-flex items-center justify-center rounded-md border px-8 py-3 text-base font-medium"
+          >
+            Kembali ke Katalog
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    import { generateWhatsAppMessage } from "@/modules/checkout/utils/generateWhatsAppMessage";
+    import { formatRupiah } from "@/shared/utils/formatRupiah";
+
+    // Get checkout success data from sessionStorage
+    const checkoutDataJson = sessionStorage.getItem("checkoutSuccess");
+
+    if (!checkoutDataJson) {
+      window.location.href = "/katalog";
+    } else {
+      // Parse the data
+      const state = JSON.parse(checkoutDataJson);
+
+      // Clear it immediately to prevent reuse on refresh
+      sessionStorage.removeItem("checkoutSuccess");
+
+      if (!state || !state.transactionNumber) {
+        window.location.href = "/katalog";
+      } else {
+        const { transactionNumber, cartItems, products, customerInfo } = state;
+
+        // Build order summary HTML
+        const productLines = cartItems
+          .map((item: any) => {
+            const product = products.find((p: any) => p.id === item.id);
+            const price = parseFloat(product?.price || "0");
+            const subtotal = price * item.quantity;
+            return `
+            <div class="flex justify-between text-sm">
+              <span>${product?.name} × ${item.quantity}</span>
+              <span>${formatRupiah(subtotal)}</span>
+            </div>
+          `;
+          })
+          .join("");
+
+        const total = cartItems.reduce((sum: number, item: any) => {
+          const product = products.find((p: any) => p.id === item.id);
+          const price = parseFloat(product?.price || "0");
+          return sum + price * item.quantity;
+        }, 0);
+
+        // Populate content
+        const contentDiv = document.getElementById("success-content");
+        if (contentDiv) {
+          contentDiv.innerHTML = `
+          <div class="rounded-lg border bg-muted/50 p-4 text-left">
+            <h2 class="mb-4 text-lg font-semibold">Detail Pesanan</h2>
+            <div class="space-y-2">
+              <div class="flex justify-between font-medium">
+                <span>Nomor Pesanan:</span>
+                <span>${transactionNumber}</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="rounded-lg border bg-muted/50 p-4 text-left">
+            <h2 class="mb-4 text-lg font-semibold">Ringkasan Pesanan</h2>
+            <div class="space-y-2">
+              ${productLines}
+              <div class="border-t pt-2">
+                <div class="flex justify-between font-semibold">
+                  <span>Total</span>
+                  <span>${formatRupiah(total)}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="rounded-lg border bg-muted/50 p-4 text-left">
+            <h2 class="mb-4 text-lg font-semibold">Informasi Pelanggan</h2>
+            <pre class="whitespace-pre-wrap text-sm">${customerInfo}</pre>
+          </div>
+        `;
+        }
+
+        // Generate WhatsApp message and set link
+        const whatsappMessage = generateWhatsAppMessage(
+          transactionNumber,
+          cartItems,
+          products,
+          customerInfo,
+        );
+
+        const encodedMessage = encodeURIComponent(whatsappMessage);
+        const whatsappNumber = "6285246428746";
+        const whatsappLink = document.getElementById("whatsapp-link");
+
+        if (whatsappLink) {
+          whatsappLink.setAttribute(
+            "href",
+            `https://wa.me/${whatsappNumber}?text=${encodedMessage}`,
+          );
+        }
+      }
+    }
+  </script>
+</BaseLayout>

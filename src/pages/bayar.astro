@@ -1,0 +1,26 @@
+---
+import BaseLayout from "@/layouts/base-layout.astro";
+import { CheckoutForm } from "@/modules/checkout/components/CheckoutForm";
+
+// Get space ID from environment
+const spaceId = parseInt(import.meta.env.SPACE_ID || "0");
+
+if (!spaceId) {
+  throw new Error("SPACE_ID environment variable is not set");
+}
+---
+
+<BaseLayout title="Checkout | Haebot Commerce">
+  <div class="bg-background min-h-screen">
+    <div class="border-b">
+      <div class="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+        <h1 class="text-3xl font-bold">Checkout</h1>
+        <p class="text-muted-foreground mt-2">
+          Lengkapi informasi Anda untuk menyelesaikan pesanan
+        </p>
+      </div>
+    </div>
+
+    <CheckoutForm client:load spaceId={spaceId} />
+  </div>
+</BaseLayout>
