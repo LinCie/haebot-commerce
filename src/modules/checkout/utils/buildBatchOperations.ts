@@ -1,7 +1,11 @@
 import type { BatchOperationsBody } from "../schemas/batch-transaction.schema";
 import type { CustomerFormData } from "../schemas/customer-form.schema";
 import type { Product } from "@/modules/products/schemas/products.schema";
-import { formatCustomerInfo } from "./formatCustomerInfo";
+import {
+  buildAddressData,
+  buildPlayersData,
+  buildTimestampsData,
+} from "./buildCustomerData";
 
 type CartProduct = {
   id: number;
@@ -14,7 +18,10 @@ export function buildBatchOperations(
   products: Product[],
   spaceId: number,
 ): BatchOperationsBody {
-  const customerInfo = formatCustomerInfo(formData);
+  // Build structured customer data
+  const addressData = buildAddressData(formData);
+  const playersData = buildPlayersData(formData);
+  const timestampsData = buildTimestampsData();
 
   const operations = [
     // Operation 1: Create transaction
@@ -25,13 +32,16 @@ export function buildBatchOperations(
         space_id: spaceId,
       },
     },
-    // Operation 2: Update transaction with customer info
+    // Operation 2: Update transaction with structured customer data
     {
       type: "update" as const,
       idRef: "tx-main",
       data: {
         handler_id: null, // No handler assigned initially
-        receiver_notes: customerInfo,
+        receiver_notes: formData.notes || "", // Only store user's checkout notes
+        address: addressData,
+        players: playersData,
+        timestamps: timestampsData,
       },
     },
     // Operations 3+: Create detail for each cart item

@@ -1,7 +1,10 @@
 import { z } from "astro/zod";
 import {
+  transactionAddressSchema,
   transactionFileSchema,
   transactionLinkSchema,
+  transactionPlayersSchema,
+  transactionTimestampsSchema,
 } from "./transaction.schema";
 
 /**
@@ -22,6 +25,10 @@ export const updateTransactionSchema = z.object({
   files: z.array(transactionFileSchema).optional(),
   tags: z.array(z.string()).optional(),
   links: z.array(transactionLinkSchema).optional(),
+  // Structured customer data fields
+  address: transactionAddressSchema.optional(),
+  players: transactionPlayersSchema.optional(),
+  timestamps: transactionTimestampsSchema.optional(),
 });
 
 export type UpdateTransactionInput = z.infer<typeof updateTransactionSchema>;

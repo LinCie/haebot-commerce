@@ -12,7 +12,7 @@ import {
   type CustomerFormData,
 } from "../schemas/customer-form.schema";
 import { buildBatchOperations } from "../utils/buildBatchOperations";
-import { formatCustomerInfo } from "../utils/formatCustomerInfo";
+import { buildAddressData, buildPlayersData } from "../utils/buildCustomerData";
 import { addCheckoutHistory } from "../stores/checkout-history.store";
 import { saveFormData, getFormData, clearFormData } from "../stores/form.store";
 import { Form } from "@/components/ui/form";
@@ -104,13 +104,17 @@ export function CheckoutForm({ spaceId }: CheckoutFormProps) {
       // Mark as success to prevent empty cart redirect
       isCheckoutSuccessRef.current = true;
 
-      // Prepare state for success page
+      // Prepare state for success page with structured customer data
       const successState = {
         transactionNumber: transaction.number,
         transactionId: transaction.id,
         cartItems,
         products,
-        customerInfo: formatCustomerInfo(data),
+        customerData: {
+          address: buildAddressData(data),
+          players: buildPlayersData(data),
+          notes: data.notes,
+        },
       };
 
       // Store in sessionStorage since Astro's navigate() doesn't preserve state reliably

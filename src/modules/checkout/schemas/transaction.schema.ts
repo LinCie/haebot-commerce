@@ -44,6 +44,32 @@ export const transactionLinkSchema = z.object({
 });
 
 /**
+ * Schema for transaction addresses in transaction responses
+ */
+export const transactionAddressSchema = z.object({
+  street: z.string(),
+  city: z.string(),
+  state: z.string(),
+  zip: z.string(),
+  country: z.string(),
+});
+
+export const transactionPlayersSchema = z.object({
+  name: z.string(),
+  phone: z.string(),
+  email: z.string(),
+});
+
+export const transactionTimestampsSchema = z.object({
+  createdAt: z.coerce.date(),
+  packagedAt: z.coerce.date().nullable().optional(),
+  shippedAt: z.coerce.date().nullable().optional(),
+  deliveredAt: z.coerce.date().nullable().optional(),
+  cancelledAt: z.coerce.date().nullable().optional(),
+  completedAt: z.coerce.date().nullable().optional(),
+});
+
+/**
  * Schema for transaction line item details (response).
  */
 export const transactionDetailSchema = z.object({
@@ -126,6 +152,10 @@ export const transactionSchema = z.object({
   all_notes: z.string().optional(),
   created_at: z.string().nullable().optional(),
   updated_at: z.string().nullable().optional(),
+  // JSON fields
+  address: transactionAddressSchema.optional(),
+  players: transactionPlayersSchema.optional(),
+  timestamps: transactionTimestampsSchema.optional(),
 });
 
 export type Transaction = z.infer<typeof transactionSchema>;

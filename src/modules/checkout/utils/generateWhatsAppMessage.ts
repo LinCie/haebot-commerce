@@ -6,11 +6,31 @@ type CartProduct = {
   quantity: number;
 };
 
+type AddressData = {
+  street: string;
+  city: string;
+  state: string;
+  zip: string;
+  country: string;
+};
+
+type PlayersData = {
+  name: string;
+  phone: string;
+  email: string;
+};
+
+type CustomerData = {
+  address: AddressData;
+  players: PlayersData;
+  notes?: string;
+};
+
 export function generateWhatsAppMessage(
   transactionNumber: string,
   cartItems: CartProduct[],
   products: Product[],
-  customerInfo: string,
+  customerData: CustomerData,
 ): string {
   const productLines = cartItems
     .map((item) => {
@@ -26,6 +46,8 @@ export function generateWhatsAppMessage(
     return sum + price * item.quantity;
   }, 0);
 
+  const { players, address, notes } = customerData;
+
   return `Halo! Saya ingin memesan:
 
 [Order #${transactionNumber}]
@@ -37,5 +59,11 @@ ${productLines}
 Total: ${formatRupiah(total)}
 
 Informasi Pelanggan:
-${customerInfo}`;
+Nama: ${players.name}
+Telepon: ${players.phone}
+Email: ${players.email}
+Alamat: ${address.street}
+Kota: ${address.city}
+Provinsi: ${address.state}
+Kode Pos: ${address.zip}${notes ? `\nCatatan: ${notes}` : ""}`;
 }

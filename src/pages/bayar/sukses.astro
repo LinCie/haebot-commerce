@@ -61,7 +61,7 @@ import { CheckCircle2 } from "lucide-react";
       if (!state || !state.transactionNumber) {
         window.location.href = "/katalog";
       } else {
-        const { transactionNumber, cartItems, products, customerInfo } = state;
+        const { transactionNumber, cartItems, products, customerData } = state;
 
         // Build order summary HTML
         const productLines = cartItems
@@ -83,6 +83,21 @@ import { CheckCircle2 } from "lucide-react";
           const price = parseFloat(product?.price || "0");
           return sum + price * item.quantity;
         }, 0);
+
+        // Build customer info display from structured data
+        const { players, address, notes } = customerData;
+        const customerInfoHtml = `
+          <div class="space-y-1 text-sm">
+            <p><strong>Nama:</strong> ${players.name}</p>
+            <p><strong>Telepon:</strong> ${players.phone}</p>
+            <p><strong>Email:</strong> ${players.email}</p>
+            <p><strong>Alamat:</strong> ${address.street}</p>
+            <p><strong>Kota:</strong> ${address.city}</p>
+            <p><strong>Provinsi:</strong> ${address.state}</p>
+            <p><strong>Kode Pos:</strong> ${address.zip}</p>
+            ${notes ? `<p><strong>Catatan:</strong> ${notes}</p>` : ""}
+          </div>
+        `;
 
         // Populate content
         const contentDiv = document.getElementById("success-content");
@@ -113,7 +128,7 @@ import { CheckCircle2 } from "lucide-react";
 
           <div class="rounded-lg border bg-muted/50 p-4 text-left">
             <h2 class="mb-4 text-lg font-semibold">Informasi Pelanggan</h2>
-            <pre class="whitespace-pre-wrap text-sm">${customerInfo}</pre>
+            ${customerInfoHtml}
           </div>
         `;
         }
@@ -123,7 +138,7 @@ import { CheckCircle2 } from "lucide-react";
           transactionNumber,
           cartItems,
           products,
-          customerInfo,
+          customerData,
         );
 
         const encodedMessage = encodeURIComponent(whatsappMessage);
