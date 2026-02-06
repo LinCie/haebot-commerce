@@ -12,7 +12,10 @@ import {
   type CustomerFormData,
 } from "../schemas/customer-form.schema";
 import { buildBatchOperations } from "../utils/buildBatchOperations";
-import { buildAddressData, buildPlayersData } from "../utils/buildCustomerData";
+import {
+  buildAddressesData,
+  buildPlayersData,
+} from "../utils/buildCustomerData";
 import { addCheckoutHistory } from "../stores/checkout-history.store";
 import { saveFormData, getFormData, clearFormData } from "../stores/form.store";
 import { Form } from "@/components/ui/form";
@@ -111,7 +114,7 @@ export function CheckoutForm({ spaceId }: CheckoutFormProps) {
         cartItems,
         products,
         customerData: {
-          address: buildAddressData(data),
+          addresses: buildAddressesData(data),
           players: buildPlayersData(data),
           notes: data.notes,
         },

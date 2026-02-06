@@ -2,7 +2,7 @@ import type { BatchOperationsBody } from "../schemas/batch-transaction.schema";
 import type { CustomerFormData } from "../schemas/customer-form.schema";
 import type { Product } from "@/modules/products/schemas/products.schema";
 import {
-  buildAddressData,
+  buildAddressesData,
   buildPlayersData,
   buildTimestampsData,
 } from "./buildCustomerData";
@@ -19,7 +19,7 @@ export function buildBatchOperations(
   spaceId: number,
 ): BatchOperationsBody {
   // Build structured customer data
-  const addressData = buildAddressData(formData);
+  const addressesData = buildAddressesData(formData);
   const playersData = buildPlayersData(formData);
   const timestampsData = buildTimestampsData();
 
@@ -39,7 +39,7 @@ export function buildBatchOperations(
       data: {
         handler_id: null, // No handler assigned initially
         receiver_notes: formData.notes || "", // Only store user's checkout notes
-        address: addressData,
+        addresses: addressesData,
         players: playersData,
         timestamps: timestampsData,
       },

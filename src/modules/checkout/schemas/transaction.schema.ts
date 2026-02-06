@@ -46,7 +46,7 @@ export const transactionLinkSchema = z.object({
 /**
  * Schema for transaction addresses in transaction responses
  */
-export const transactionAddressSchema = z.object({
+export const transactionAddressesSchema = z.object({
   street: z.string(),
   city: z.string(),
   state: z.string(),
@@ -153,7 +153,7 @@ export const transactionSchema = z.object({
   created_at: z.string().nullable().optional(),
   updated_at: z.string().nullable().optional(),
   // JSON fields
-  address: transactionAddressSchema.optional(),
+  addresses: transactionAddressesSchema.optional(),
   players: transactionPlayersSchema.optional(),
   timestamps: transactionTimestampsSchema.optional(),
 });

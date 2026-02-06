@@ -85,16 +85,16 @@ import { CheckCircle2 } from "lucide-react";
         }, 0);
 
         // Build customer info display from structured data
-        const { players, address, notes } = customerData;
+        const { players, addresses, notes } = customerData;
         const customerInfoHtml = `
           <div class="space-y-1 text-sm">
             <p><strong>Nama:</strong> ${players.name}</p>
             <p><strong>Telepon:</strong> ${players.phone}</p>
             <p><strong>Email:</strong> ${players.email}</p>
-            <p><strong>Alamat:</strong> ${address.street}</p>
-            <p><strong>Kota:</strong> ${address.city}</p>
-            <p><strong>Provinsi:</strong> ${address.state}</p>
-            <p><strong>Kode Pos:</strong> ${address.zip}</p>
+            <p><strong>Alamat:</strong> ${addresses.street}</p>
+            <p><strong>Kota:</strong> ${addresses.city}</p>
+            <p><strong>Provinsi:</strong> ${addresses.state}</p>
+            <p><strong>Kode Pos:</strong> ${addresses.zip}</p>
             ${notes ? `<p><strong>Catatan:</strong> ${notes}</p>` : ""}
           </div>
         `;

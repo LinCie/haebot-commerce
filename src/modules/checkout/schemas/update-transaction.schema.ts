@@ -1,6 +1,6 @@
 import { z } from "astro/zod";
 import {
-  transactionAddressSchema,
+  transactionAddressesSchema,
   transactionFileSchema,
   transactionLinkSchema,
   transactionPlayersSchema,
@@ -26,7 +26,7 @@ export const updateTransactionSchema = z.object({
   tags: z.array(z.string()).optional(),
   links: z.array(transactionLinkSchema).optional(),
   // Structured customer data fields
-  address: transactionAddressSchema.optional(),
+  addresses: transactionAddressesSchema.optional(),
   players: transactionPlayersSchema.optional(),
   timestamps: transactionTimestampsSchema.optional(),
 });

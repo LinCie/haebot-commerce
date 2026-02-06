@@ -1,20 +1,20 @@
 import type { CustomerFormData } from "../schemas/customer-form.schema";
 import type { z } from "astro/zod";
 import type {
-  transactionAddressSchema,
+  transactionAddressesSchema,
   transactionPlayersSchema,
   transactionTimestampsSchema,
 } from "../schemas/transaction.schema";
 
-type AddressData = z.infer<typeof transactionAddressSchema>;
+type addressesData = z.infer<typeof transactionAddressesSchema>;
 type PlayersData = z.infer<typeof transactionPlayersSchema>;
 type TimestampsData = z.infer<typeof transactionTimestampsSchema>;
 
 /**
- * Transform customer form data into structured address object.
+ * Transform customer form data into structured addresses object.
  * Maps form field names to backend schema field names.
  */
-export function buildAddressData(formData: CustomerFormData): AddressData {
+export function buildAddressesData(formData: CustomerFormData): addressesData {
   return {
     street: formData.street,
     city: formData.city,
