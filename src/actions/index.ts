@@ -4,7 +4,11 @@ import {
   batchReadProductsAction,
 } from "@/modules/products/actions";
 import { batchTransactionAction } from "@/modules/checkout/actions";
-import { getOrderAction, lookupOrderAction } from "@/modules/order/actions";
+import {
+  getOrderAction,
+  lookupOrderAction,
+  getOrdersBatchAction,
+} from "@/modules/order/actions";
 
 export const server = {
   // Products
@@ -18,4 +22,5 @@ export const server = {
   // Order
   getOrderAction: getOrderAction,
   lookupOrderAction: lookupOrderAction,
+  getOrdersBatchAction: getOrdersBatchAction,
 };
