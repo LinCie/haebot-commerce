@@ -45,6 +45,7 @@ import { CheckCircle2 } from "lucide-react";
   <script>
     import { generateWhatsAppMessage } from "@/modules/checkout/utils/generateWhatsAppMessage";
     import { formatRupiah } from "@/shared/utils/formatRupiah";
+    import { addOrdersToHistory } from "@/modules/order/stores/order-history.store";
 
     // Get checkout success data from sessionStorage
     const checkoutDataJson = sessionStorage.getItem("checkoutSuccess");
@@ -61,7 +62,15 @@ import { CheckCircle2 } from "lucide-react";
       if (!state || !state.transactionNumber) {
         window.location.href = "/katalog";
       } else {
-        const { transactionNumber, cartItems, products, customerData } = state;
+        const { transactionNumber, cartItems, products, customerData, transactionId } = state;
+
+        // Add order to history if transactionId exists
+        if (transactionId) {
+          addOrdersToHistory([{
+            tradeId: transactionId,
+            timestamp: new Date().toISOString()
+          }]);
+        }
 
         // Build order summary HTML
         const productLines = cartItems

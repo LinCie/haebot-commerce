@@ -17,6 +17,7 @@ import {
   buildPlayersData,
 } from "../utils/buildCustomerData";
 import { addCheckoutHistory } from "../stores/checkout-history.store";
+import { addOrdersToHistory } from "@/modules/order/stores/order-history.store";
 import { saveFormData, getFormData, clearFormData } from "../stores/form.store";
 import { Form } from "@/components/ui/form";
 import { CustomerInfoForm } from "./CustomerInfoForm";
@@ -101,8 +102,14 @@ export function CheckoutForm({ spaceId }: CheckoutFormProps) {
         return;
       }
 
-      // Add to checkout history
+      // Add to checkout history and order history
       addCheckoutHistory(transaction.id, new Date().toISOString());
+      addOrdersToHistory([
+        {
+          tradeId: transaction.id,
+          timestamp: new Date().toISOString(),
+        },
+      ]);
 
       // Mark as success to prevent empty cart redirect
       isCheckoutSuccessRef.current = true;
