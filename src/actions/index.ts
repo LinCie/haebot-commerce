@@ -4,6 +4,7 @@ import {
   batchReadProductsAction,
 } from "@/modules/products/actions";
 import { batchTransactionAction } from "@/modules/checkout/actions";
+import { getOrderAction, lookupOrderAction } from "@/modules/order/actions";
 
 export const server = {
   // Products
@@ -13,4 +14,8 @@ export const server = {
 
   // Checkout
   batchTransactionAction: batchTransactionAction,
+
+  // Order
+  getOrderAction: getOrderAction,
+  lookupOrderAction: lookupOrderAction,
 };

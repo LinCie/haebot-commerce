@@ -26,6 +26,7 @@ export function Header({ pathname = "/" }: HeaderProps) {
     { href: "/", label: "Beranda" },
     { href: "/katalog", label: "Katalog Produk" },
     { href: "/riwayat", label: "Riwayat Pesanan" },
+    { href: "/cek-pesanan", label: "Cek Pesanan" },
   ];
 
   const isActive = (path: string) => pathname === path;
