@@ -69,50 +69,56 @@ export function ProductList({
         return (
           <div
             key={item.id}
-            className="flex items-center gap-4 rounded-lg border p-4"
+            className="flex flex-col gap-4 rounded-lg border p-4 md:flex-row md:items-center"
           >
-            <div className="flex-1">
-              <h3 className="font-medium">{product.name}</h3>
-              <p className="text-muted-foreground text-sm">
-                {formatRupiah(price)} × {item.quantity}
-              </p>
-              <p className="text-muted-foreground text-xs">
-                Stok tersedia: {stock}
-              </p>
+            <div className="flex flex-1 items-center justify-between gap-4">
+              <div className="flex-1">
+                <h3 className="font-medium">{product.name}</h3>
+                <p className="text-muted-foreground text-sm">
+                  {formatRupiah(price)} × {item.quantity}
+                </p>
+                <p className="text-muted-foreground text-xs">
+                  Stok tersedia: {stock}
+                </p>
+              </div>
+
+              <div className="flex items-center gap-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  onClick={() => handleDecrement(item.id, item.quantity)}
+                  disabled={disabled || item.quantity <= 1}
+                >
+                  <Minus className="h-4 w-4" />
+                </Button>
+
+                <Input
+                  type="number"
+                  value={item.quantity}
+                  onChange={(e) =>
+                    handleQuantityChange(item.id, e.target.value, stock)
+                  }
+                  disabled={disabled}
+                  className="w-16 [appearance:textfield] text-center [&::-webkit-inner-spin-button]:appearance-none [&::-webkit-outer-spin-button]:appearance-none"
+                  min={1}
+                  max={stock}
+                />
+
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  onClick={() => handleIncrement(item.id, item.quantity, stock)}
+                  disabled={disabled || item.quantity >= stock}
+                >
+                  <Plus className="h-4 w-4" />
+                </Button>
+              </div>
             </div>
 
-            <div className="flex items-center gap-2">
-              <Button
-                type="button"
-                variant="outline"
-                size="icon"
-                onClick={() => handleDecrement(item.id, item.quantity)}
-                disabled={disabled || item.quantity <= 1}
-              >
-                <Minus className="h-4 w-4" />
-              </Button>
-
-              <Input
-                type="number"
-                value={item.quantity}
-                onChange={(e) =>
-                  handleQuantityChange(item.id, e.target.value, stock)
-                }
-                disabled={disabled}
-                className="w-16 text-center"
-                min={1}
-                max={stock}
-              />
-
-              <Button
-                type="button"
-                variant="outline"
-                size="icon"
-                onClick={() => handleIncrement(item.id, item.quantity, stock)}
-                disabled={disabled || item.quantity >= stock}
-              >
-                <Plus className="h-4 w-4" />
-              </Button>
+            <div className="flex items-center justify-between gap-4 md:justify-end">
+              <p className="font-semibold">{formatRupiah(subtotal)}</p>
 
               <Button
                 type="button"
@@ -123,10 +129,6 @@ export function ProductList({
               >
                 <Trash2 className="h-4 w-4" />
               </Button>
-            </div>
-
-            <div className="text-right">
-              <p className="font-semibold">{formatRupiah(subtotal)}</p>
             </div>
           </div>
         );

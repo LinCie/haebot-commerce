@@ -366,7 +366,7 @@ export function CataloguePage({
             <div
               className={
                 viewMode === "grid"
-                  ? "grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4"
+                  ? "grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 md:gap-4 xl:grid-cols-4"
                   : "space-y-2"
               }
             >
@@ -384,7 +384,7 @@ export function CataloguePage({
               </Button>
             </div>
           ) : viewMode === "grid" ? (
-            <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-4">
+            <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 md:gap-4 xl:grid-cols-4">
               {products.map((product) => (
                 <ProductCard key={product.id} product={product} />
               ))}
