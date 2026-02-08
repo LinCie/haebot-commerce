@@ -12,7 +12,7 @@
   },
   "routes": [
     {
-      "pattern": "store.lincie.me",
+      "pattern": "store.haebot.com",
       "custom_domain": true,
     },
   ],
