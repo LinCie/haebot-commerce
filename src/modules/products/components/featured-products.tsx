@@ -35,7 +35,7 @@ export function FeaturedProducts() {
   }, []);
 
   return loading ? (
-    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 md:gap-4 lg:grid-cols-4">
       {Array.from({ length: 8 }).map((_, index) => (
         <ProductCardSkeleton key={index} />
       ))}
@@ -45,7 +45,7 @@ export function FeaturedProducts() {
       Error loading products: {error.message}
     </div>
   ) : (
-    <div className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-4">
+    <div className="grid grid-cols-2 gap-2 sm:grid-cols-3 sm:gap-3 md:gap-4 lg:grid-cols-4">
       {products.map((product) => (
         <ProductCard key={product.id} product={product} />
       ))}
