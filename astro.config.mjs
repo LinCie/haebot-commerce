@@ -7,22 +7,24 @@ import react from "@astrojs/react";
 
 import cloudflare from "@astrojs/cloudflare";
 
+import sitemap from "@astrojs/sitemap";
+
+import robotsTxt from "astro-robots-txt";
+
 // https://astro.build/config
 export default defineConfig({
-  site: import.meta.env.APP_URL,
+  site: "https://store.haebot.com",
   prefetch: true,
 
   vite: {
     plugins: [tailwindcss()],
   },
 
-  integrations: [
-    react({
-      babel: {
-        plugins: [["babel-plugin-react-compiler"]],
-      },
-    }),
-  ],
+  integrations: [react({
+    babel: {
+      plugins: [["babel-plugin-react-compiler"]],
+    },
+  }), sitemap(), robotsTxt()],
 
   adapter: cloudflare({ imageService: "compile" }),
 });

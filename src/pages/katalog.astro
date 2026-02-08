@@ -8,7 +8,10 @@ const search = Astro.url.searchParams.get("search");
 const page = Astro.url.searchParams.get("page");
 ---
 
-<BaseLayout title="Katalog Produk | Haebot Commerce">
+<BaseLayout
+  title="Katalog Produk"
+  description="Jelajahi katalog lengkap suku cadang CNC, spare parts mesin, tooling, dan peralatan industri dari Haebot Store."
+>
   <CataloguePage
     client:load
     initialCategory={category || undefined}

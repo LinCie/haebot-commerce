@@ -1,13 +1,17 @@
 ---
 import "@/shared/styles/global.css";
+import SEO from "@/components/seo/SEO.astro";
 
 interface Props {
   title: string;
   description?: string;
+  noindex?: boolean;
+  nofollow?: boolean;
+  image?: string;
+  imageAlt?: string;
 }
 
-const { title, description = "Jual perlengkapan industri CNC terlengkap" } =
-  Astro.props;
+const { title, description, noindex, nofollow, image, imageAlt } = Astro.props;
 
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
@@ -18,11 +22,16 @@ import { Toaster } from "@/components/ui/sonner";
 <html lang="id">
   <head>
     <meta charset="UTF-8" />
-    <meta name="description" content={description} />
     <meta name="viewport" content="width=device-width" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <title>{title}</title>
+    <SEO
+      title={title}
+      description={description}
+      noindex={noindex}
+      nofollow={nofollow}
+      image={image}
+      imageAlt={imageAlt}
+    />
     <slot name="head" />
   </head>
   <body class="bg-background flex min-h-screen flex-col font-sans antialiased">
